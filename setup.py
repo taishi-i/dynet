@@ -1,26 +1,25 @@
 import distutils.sysconfig
 import logging as log
+import os
 import platform
-import zipfile
+import re
 import sys
+import urllib
+import zipfile
 from distutils.command.build import build as _build
-from distutils.command.build_py import build_py as _build_py
 from distutils.command.install_data import install_data as _install_data
 from distutils.errors import DistutilsSetupError
 from distutils.spawn import find_executable
 from distutils.sysconfig import get_python_lib
 from multiprocessing import cpu_count
+from shutil import copytree, rmtree
 from subprocess import Popen
 
-import os
-import re
 from Cython.Distutils import build_ext as _build_ext
 from setuptools import setup
+from setuptools.command.build_py import build_py as _build_py
 from setuptools.extension import Extension
-from shutil import rmtree, copytree, copy
 
-# urlretrieve has a different location in Python 2 and Python 3
-import urllib
 if hasattr(urllib, "urlretrieve"):
     urlretrieve = urllib.urlretrieve
 else:
@@ -383,4 +382,5 @@ setup(
     ext_modules=TARGET,
     py_modules=["dynet", "dynet_viz", "dynet_config"],
     data_files=[(os.path.join("..", ".."), DATA_FILES)],
+    license_files=("../LICENSE.txt",),
 )
