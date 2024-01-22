@@ -239,7 +239,7 @@ void initialize(DynetParams& params) {
     random_device rd;
     params.random_seed = rd();
   }
-  cerr << "[dynet] random seed: " << params.random_seed << endl;
+  // cerr << "[dynet] random seed: " << params.random_seed << endl;
   reset_rng(params.random_seed);
 
   // Set weight decay rate
@@ -257,7 +257,7 @@ void initialize(DynetParams& params) {
   profiling_flag = params.profiling;
 
   // Allocate memory
-  cerr << "[dynet] allocating memory: " << params.mem_descriptor << "MB\n";
+  // cerr << "[dynet] allocating memory: " << params.mem_descriptor << "MB\n";
   int default_index = 0;
 
   Device *d;
@@ -279,7 +279,7 @@ void initialize(DynetParams& params) {
   kSCALAR_MINUSONE = default_device->kSCALAR_MINUSONE;
   kSCALAR_ONE = default_device->kSCALAR_ONE;
   kSCALAR_ZERO = default_device->kSCALAR_ZERO;
-  cerr << "[dynet] memory allocation done.\n";
+  // cerr << "[dynet] memory allocation done.\n";
 
 }
 
