@@ -355,7 +355,7 @@ except:
 
 setup(
     name="dyNET38",
-    version="2.1",
+    version="2.2",
     install_requires=["cython", "numpy"],
     description="Fork version of DyNet: DyNet38 shares wheels of DyNet for Python 3.8+",
     long_description=long_description,
@@ -372,6 +372,8 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     url="https://github.com/taishi-i/dynet",
