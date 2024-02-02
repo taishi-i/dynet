@@ -1,6 +1,9 @@
 project(dynet)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
+find_package(Threads REQUIRED)
+
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # DYNET uses Eigen which exploits modern CPU architectures. To get the
@@ -51,13 +54,13 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 ######## Cross-compiler, cross-platform options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_FAST_MATH")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_FAST_MATH -pthread")
 if (MKL OR MKL_ROOT)
   if (DEFINED ENV{MKL_ROOT} AND NOT DEFINED MKL_ROOT)  # use env variable if not defined
     set(MKL_ROOT $ENV{MKL_ROOT})
   endif()
   find_mkl()  # sets include/lib directories and sets ${LIBS} needed for linking
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_USE_MKL_ALL")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_USE_MKL_ALL -pthread")
 endif()
 
 # There are about 30 files compiled for GPU. We merge them into less
@@ -73,18 +76,18 @@ endif()
 
 ######## Platform-specific options
 if(WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX")   # Disable min/max macros in windef.h
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX -pthread")   # Disable min/max macros in windef.h
 elseif(APPLE AND (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm.*" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64.*"))
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=apple-m1")   # Clang on ARM-based Macs does not support -march=native
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=apple-m1 -pthread")   # Clang on ARM-based Macs does not support -march=native
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -pthread")
 endif()
 
 ######## Compiler-specific options
 if(MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W1 /MP")   # -Wall produces 20k warnings. Enable parallel compilation
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W1 /MP -pthread")   # -Wall produces 20k warnings. Enable parallel compilation
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fno-finite-math-only -Wall -Wno-missing-braces -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fno-finite-math-only -Wall -Wno-missing-braces -std=c++11 -pthread")
 
   if (NOT RELEASE_OPT_LEVEL)
     set(RELEASE_OPT_LEVEL "fast")
