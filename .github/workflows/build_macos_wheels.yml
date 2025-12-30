@@ -15,8 +15,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_SKIP: "pp*"
-          CIBW_ENABLE: "cpython-prerelease"
+          CIBW_SKIP: "*-musllinux_* cp314t-*"
           CIBW_ENVIRONMENT: "PIP_USE_PEP517=1"
       - uses: actions/upload-artifact@v4
         with:
