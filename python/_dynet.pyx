@@ -1173,7 +1173,7 @@ cdef class LookupParameters(Expression): # {{{
         Args:
             arr (np.array): numpy array of shape :code:`(num_lookups,...)`
         """
-        rows = long(self.thisptr.get_storage().values.size())
+        rows = int(self.thisptr.get_storage().values.size())
         if len(arr) > rows:
             raise Exception("too many rows")
         if arr.shape[1] != self.thisptr.get_storage().values[0].d.rows():
